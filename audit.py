@@ -3,7 +3,7 @@
 from pathlib import Path
 from html.parser import HTMLParser
 import json, sys
-ROOT=Path(__file__).resolve().parents[2]
+ROOT=Path(__file__).resolve().parent / 'target-site'
 CATEGORIES=["inclusion-accesibilidad","bienestar-personal","desarrollo-espiritual","educacion-aprendizaje"]
 APPS={"inclusion-accesibilidad":["brailux","rutinago","comunicago"],"bienestar-personal":["motiva"],"desarrollo-espiritual":["quizbible","mimomento"],"educacion-aprendizaje":["englishfast","crucilux","sudolux"]}
 class Scan(HTMLParser):
