@@ -32,7 +32,7 @@ def main():
   record={"page":path,"group":group,"header":parser.headers,"footer":parser.footers,"main_count":parser.mains,"h1_count":parser.headings,"nav_count":parser.navs,"local_links":sum(not x.startswith(("https:","http:","mailto:","#")) for x in parser.links)}
   out.append(record)
   for tag,count in (("header",len(parser.headers)),("footer",len(parser.footers)),("main",parser.mains)):
-   if count!=1:findings.append({"path":path,"finding":f"{tag}: {count} (referencia esperada: 1)","level":"review"})
+   if count<1 or (tag in ("footer","main") and count!=1):findings.append({"path":path,"finding":f"{tag}: {count} (revisar estructura)","level":"review"})
   if parser.headings!=1:findings.append({"path":path,"finding":f"h1: {parser.headings}","level":"review"})
  classes=lambda item,key:Counter(" ".join(x[key] for x in item.get("header" if key=="class" else "footer",[])) for item in out)
  report={"pages":out,"findings":findings,"summary":{"inspected":len(out),"expected":len(PAGES),"observations":len(findings),"by_group":dict(Counter(x["group"] for x in out))},"limits":"Auditoría HTML; no demuestra dimensiones, contraste, reflujo, foco ni equivalencia visual"}
