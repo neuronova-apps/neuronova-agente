@@ -1,0 +1,30 @@
+name: NN Agente - Auditoría de matriz
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '17 11 * * 1'
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar agente
+        uses: actions/checkout@v4
+      - name: Descargar matriz como fuente de lectura
+        uses: actions/checkout@v4
+        with:
+          repository: neuronova-apps/neuronova-apps.github.io
+          path: target-site
+          persist-credentials: false
+      - name: Auditar sin modificar la matriz
+        run: python3 audit.py > nn-agent-report.json
+      - name: Conservar resultados
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nn-agent-report
+          path: nn-agent-report.json
+          if-no-files-found: warn
